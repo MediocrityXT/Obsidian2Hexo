@@ -1,3 +1,4 @@
+pip install termcolor python-frontmatter
 workdir=$(pwd)
 hexo_dir=/Users/xxx/hexoblog/
 
