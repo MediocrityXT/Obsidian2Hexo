@@ -1,9 +1,9 @@
+# https://github.com/eyeseast/python-frontmatter
 import frontmatter
 import os
 import re
 import datetime
 import traceback
-# https://github.com/eyeseast/python-frontmatter
 from termcolor import cprint
 import hashlib
 
@@ -33,13 +33,15 @@ def writePost2md(post, filepath):
     except Exception as e:
         return False
 
-def main(obsidian_vault_dir):
+def main(obsidian_vault_dir, ignore_markdown_files = []):
     success = {}
     failure = {}
 
     for dirpath,dirs,files in os.walk(obsidian_vault_dir):
         for file in files:
             if file.endswith('.md'):
+                if file in ignore_markdown_files:
+                    continue
                 filepath = os.path.join(dirpath,file)
                 try:
                     post = frontmatter.load(filepath)

@@ -1,12 +1,7 @@
 pip install termcolor python-frontmatter
-workdir=$(pwd)
-hexo_dir=/Users/xxx/hexoblog/
-
+cd /Users/xxx/Documents/Code/Obsidian2HexoSource/
 python copy_to_hexo.py
 msg="从Obsidian自动更新 $? 篇md文章 $(date -I)"
-cd $hexo_dir
-hexo clean
+hexo_dir=/Users/xxx/Desktop/nextblog/
+cd $hexo_dir && hexo clean && git add . && git commit -m "$msg" && git push
 # hexo clean && hexo g && hexo s -o
-git add . && git commit -m $msg
-git push
-cd $workdir

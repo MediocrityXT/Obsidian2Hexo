@@ -18,7 +18,7 @@ def removeBlogTag(content):
 
 def removeDangerCallout(content):
     # Define the regex pattern for danger blocks with case-insensitive flag
-    pattern = re.compile(r'^> \[!DANGER\][^\n]*\n(?:> [^\n]*\n)*', re.MULTILINE | re.IGNORECASE)
+    pattern = re.compile(r'^> \[!DANGER\][^\n]*(?:\n> [^\n]*)*', re.MULTILINE | re.IGNORECASE)
     # Remove danger blocks from the content
     clean_content = pattern.sub('\n', content)
     return clean_content
@@ -115,7 +115,8 @@ hexo_source_dir = hexo_db['A_HEXO_SOURCE_DIR']
 hexo_source_dir_img = os.path.join(hexo_source_dir, 'img')
 hexo_source_dir_posts = os.path.join(hexo_source_dir, '_posts')
 
-success,failure = add_front_matter.main(obsidian_vault_dir)
+ignore_markdown_files = hexo_db.get('IGNORE_MARKDOWN_FILES', [])
+success,failure = add_front_matter.main(obsidian_vault_dir, ignore_markdown_files = ignore_markdown_files)
 
 update_cnt = 0
 for filepath, hash_value in success.items():
@@ -132,7 +133,7 @@ for filepath, hash_value in success.items():
         
         # 删除blog标签
         content = removeBlogTag(content)
-        # 预处理，删除>[!Danger]段落
+        # 预处理，删除> [!Danger]段落
         content = removeDangerCallout(content)
         # 处理图片链接
         content = copy_and_replace_images(content, filedir, hexo_source_dir_img, filename_wo_ext, obsidian_vault_dir)

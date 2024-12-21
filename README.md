@@ -12,6 +12,12 @@
 	```
 2. 修改 `moveMarkdowns.sh` 中的hexo_dir，它是 `A_HEXO_SOURCE_DIR` 的上级目录。
 3. `bash moveMarkdowns.sh` 自动将文章和图片从Obsidian复制到Hexo博客，然后push源码到github。
+4. 如果有不想脚本处理的md文件，或者脚本碰到总是出错的md文件想跳过，在 `HEXO_DB.yml` 中添加`IGNORE_MARKDOWN_FILES` 列表
+
+	```
+	IGNORE_MARKDOWN_FILES: 
+	  - example{{date}}.md
+	```
 
 
 # 设计
@@ -20,7 +26,7 @@
 1. Obsidian中md增加YAML：运行add-front-matter.py，在obsidian中尝试读取所有文件的FrontMatter的tags，并且解析第一行可能存在的tags，对所有包含“blog”标签的markdown文件，自动去除第一行tags，生成FrontMatter，并保存到obsidian文件夹中。计算每个md的hash。
 2. 将Obsidian中需要的md文章和涉及图片复制到hexo blog source目录：运行copy-to-hexo.py读取HEXO_DB.yml缓存，跳过缓存中所有存在且hash没变化的文章。
 	1. 删除“blog”标签。因为复制过来的所有文章都有这个标签
-	2. 预处理策略，去掉敏感信息文本块 `> ![Danger]` 块，大小写不敏感
+	2. 预处理策略，去掉敏感信息文本块 `> [!Danger]` 块，大小写不敏感
 	3. 检查引用的url
 		1. http链接，则保留该url
 		2. 引用md和pdf则去掉链接格式，只保留该文件名【TODO：双链文章如果在博客缓存中出现，则改为网页url】
